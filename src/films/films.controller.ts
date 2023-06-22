@@ -15,7 +15,7 @@ import { CreateFilmDto } from './dto/create-film.dto';
 import { UpdateFilmDto } from './dto/update-film.dto';
 import { Film } from './schemas/films.schema';
 
-@Controller('movies')
+@Controller('/movies')
 export class FilmsController {
     constructor(private filmService : FilmsService){}
 
@@ -23,15 +23,14 @@ export class FilmsController {
     getAll(): Promise<Film[]>{
         return this.filmService.getAll()
     }
-
-    @Post()
-    create(@Body() film : CreateFilmDto) :Promise<Film>{
-        return this.filmService.create(film)
-    }
     
     @Get(':id')
     getOne(@Param('id') id: number) :Promise<Film>{
         return this.filmService.getById(id)
+    }
+    @Post()
+    create(@Body() film : CreateFilmDto) :Promise<Film>{
+        return this.filmService.create(film)
     }
 
     @Delete(':id')
