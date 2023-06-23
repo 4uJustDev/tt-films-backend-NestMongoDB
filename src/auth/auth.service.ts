@@ -17,9 +17,8 @@ export class AuthService {
     ) {}
 
     async registration(dto : CreateUserDto) : Promise<{token : string}>{
-        const {email, password} = dto;
 
-        const candidate = await this.userService.getUserByEmail(email)
+        const candidate = await this.userService.getUserByEmail(dto.email)
 
         if (candidate){
             throw new UnauthorizedException("This email is already use")
@@ -27,7 +26,7 @@ export class AuthService {
 
         const salt = await bcrypt.genSalt();
 
-        const passwordHash = await bcrypt.hash(password, salt)
+        const passwordHash = await bcrypt.hash(dto.password, salt)
 
         const user = await this.userService.createUser({...dto, password : passwordHash})
 

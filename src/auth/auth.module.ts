@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { JwtModule } from '@nestjs/jwt';
 import { User, UserSchema } from '../users/schemas/user.schema';
@@ -8,6 +8,8 @@ import { UsersModule } from 'src/users/users.module';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
+  controllers: [AuthController],
+  providers: [AuthService, ],
   imports : [
     ConfigModule.forRoot({
       envFilePath : '.env',
@@ -20,9 +22,11 @@ import { ConfigModule } from '@nestjs/config';
       }
     }),
     MongooseModule.forFeature([{name: User.name, schema: UserSchema}]),
-    UsersModule
+    forwardRef(()=>UsersModule) 
   ],
-  controllers: [AuthController],
-  providers: [AuthService, ]
+  exports: [
+    AuthService,
+    JwtModule
+  ]
 })
 export class AuthModule {}
