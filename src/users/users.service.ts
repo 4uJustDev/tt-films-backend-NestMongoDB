@@ -15,7 +15,7 @@ export class UsersService {
 
     async createUser( dto : CreateUserDto){
         const user = await this.userModel.create(dto);
-        const role = await this.roleService.getRoleValue("USER")
+        const role = await this.roleService.getRoleValue("user")
         await user.$set('roles', role.id)
         user.roles = [role]
         return user;
@@ -26,9 +26,6 @@ export class UsersService {
     }
     async getUserByEmail(email:string){
         const user = await this.userModel.findOne({email});
-        if(!user){
-            throw new UnauthorizedException("Invalid email or password");
-        }
         return user;
     }
 }
