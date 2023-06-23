@@ -7,7 +7,6 @@ import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UsersService } from 'src/users/users.service';
 import { Model } from 'mongoose';
 
-
 @Injectable()
 export class AuthService {
 
@@ -36,33 +35,33 @@ export class AuthService {
         return this.generateToken(user)
     }
 
-    // async login (dto : CreateUserDto) : Promise<{token : string}> {
-    //     const {email, password} =dto;
+    async login (dto : CreateUserDto) : Promise<{token : string}> {
 
-    //     const user = await this.userModel.findOne({email})
-        
-    //     if(!user){
-    //         throw new UnauthorizedException("Invalid email or password")
-    //     }
+        const user = await this.validateUser(dto);
 
-    //     const isPasswordCorrect = await bcrypt.compare(password, user.password)
-
-    //     if(!isPasswordCorrect){
-    //         throw new UnauthorizedException("Invalid email or password")
-    //     }
-
-    //     const token = this.jwtService.sign({id: user._id})
-
-    //     return { token }
-    // }
+        return this.generateToken(user);
+    }
 
     async generateToken(user){
-        const payload = {email: user.email, id: user._id, roles: user.roles}
+        const payload = {email: user.email, id: user._id, roles: user.roles};
 
         return {
             token: this.jwtService.sign(payload)
+        };
+
+    }
+
+    async validateUser(dto : CreateUserDto){
+        const user = await this.userService.getUserByEmail(dto.email);
+
+        const isPasswordCorrect = await bcrypt.compare(dto.password, user.password);
+
+        if(isPasswordCorrect && user){
+
+            return user;
         }
 
+        throw new UnauthorizedException("Invalid email or password");
     }
 
 }

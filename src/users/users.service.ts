@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { User, UserDocument } from './schemas/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
@@ -26,7 +26,9 @@ export class UsersService {
     }
     async getUserByEmail(email:string){
         const user = await this.userModel.findOne({email});
-
+        if(!user){
+            throw new UnauthorizedException("Invalid email or password");
+        }
         return user;
     }
 }
