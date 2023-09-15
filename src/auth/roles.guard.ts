@@ -31,7 +31,7 @@ export class RolesGuard implements CanActivate {
             const token = authHeader.split(' ')[1]
 
             if (bearer !== 'Bearer' || !token) {
-                throw new HttpException( 'You don`t have permission', HttpStatus.FORBIDDEN)
+                throw new HttpException('You don`t have permission', HttpStatus.FORBIDDEN)
             }
 
             const user = this.jwtService.verify(token);

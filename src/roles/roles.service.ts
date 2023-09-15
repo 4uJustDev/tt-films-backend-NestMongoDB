@@ -19,4 +19,7 @@ export class RolesService {
 
         return role;
     }
+    async getAll(): Promise<Role[]>{
+        return this.roleModel.find().exec()
+    }
 }

@@ -30,4 +30,8 @@ export class FilmsService {
         return this.filmModel.findByIdAndRemove(id);
     }
 
+    async removeAll(){
+        return this.filmModel.deleteMany({});
+    }
+
 }

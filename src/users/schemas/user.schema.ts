@@ -13,8 +13,8 @@ export class User{
     @Prop({required:true})
     password : string;
 
-    @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Role' }] })
-    roles: Role[];
+    @Prop({ type: { type: mongoose.Schema.Types.ObjectId, ref: 'Role' } })
+    roles: Role;
 
 }
 

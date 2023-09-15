@@ -30,7 +30,7 @@ export class AuthService {
 
         const user = await this.userService.createUser({...dto, password : passwordHash})
 
-
+        console.log("AUTH USER" + user)
         return this.generateToken(user)
     }
 

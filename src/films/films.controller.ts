@@ -28,7 +28,6 @@ export class FilmsController {
         return this.filmService.getById(id)
     }
     @Post()
-    @UseGuards(JwtAuthGuard)
     create(@Body() film : CreateFilmDto) :Promise<Film>{
         return this.filmService.create(film)
     }
@@ -40,9 +39,15 @@ export class FilmsController {
     }
 
     @Put(':id')
-    @UseGuards(JwtAuthGuard)
     update (@Body() updateFilmDto : UpdateFilmDto, @Param('id') id : number) :Promise<Film>{
         return this.filmService.update(id, updateFilmDto)
     }
 
+    @Delete()
+    removeDocuments(){
+        return this.filmService.removeAll()
+    }
+
 }
+
+// @UseGuards(JwtAuthGuard)
